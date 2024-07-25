@@ -1,0 +1,119 @@
+
+import heapq
+lista=list()
+class Empleado:
+  def init (self,dni,nombre_apellido,cod_cargo,sueldo_neto,sueldo_basic,antiguedad):
+    self.dni=()
+    self.nombre_apellido=(" ")
+    self.cod_cargo=( )
+    self.sueldo_neto=( )
+    self.sueldo_basic=( )
+    self.antiguedad=( )
+      
+def menu():
+      seleccion=0
+      while seleccion != 7:
+        print("elige una de las opciones")
+        print ("1.cargar datos del empleado")
+        print ("2.mostrar datos")
+        print ("3.buscar datos")
+        print ("4.dar de baja")
+        print ("5.sueldo liquidado")
+        print("6.ganacias")
+        print("7.salir")
+        seleccion = int (input("elegir opcion: "))
+        if seleccion==1:
+          registrar()
+        if seleccion==2:
+          mostrar()
+        if seleccion==3:
+          buscar()
+        
+        if seleccion==4:
+          bajas()
+          
+        if seleccion==5:
+          sueldo_liquidado()
+       
+        if seleccion==6:
+          ganacias()
+          
+        if seleccion==7:
+          salir()
+          
+
+def registrar():
+  print("registro de empleado: ")
+  empleado=Empleado()
+  empleado.dni=input("introduce dni: ")
+  empleado.nombre_apellido=input("introduce nombre y apellido: ")
+  empleado.cod_cargo=input("introduce codigo de cargo: ")
+  empleado.sueldo_basic=int(input("introduce sueldo basico: "))
+  empleado.antiguedad= int(input("introduce años de antiguedad: "))
+   
+  desc_total= (empleado.sueldo_basic* empleado.antiguedad/100)+(empleado.sueldo_basic *11 /100)+(empleado.sueldo_basic*3 / 100)
+  
+  print (desc_total)
+
+  empleado.sueldo_neto = empleado.sueldo_basic - desc_total
+  print (empleado.sueldo_neto)
+  
+  lista.append(empleado)
+
+def mostrar():
+  print("mostrar registro: ")
+  for empleado in lista:
+    print("el nombre del empleado es",empleado.nombre_apellido,"el dni:",empleado.dni,"codigo de cargo",empleado.cod_cargo,)
+    
+def buscar():
+  print("buscar registro: ")
+  resp=int(input("¿quiere buscar por codigo(1) o dni(2)?: "))
+  if resp==2:
+    dni=input("ingrese dni: ")
+    for empleado in lista:
+      if empleado.dni==dni:
+        print(empleado.nombre_apellido,"-",empleado.dni,"-",empleado.cod_cargo)
+  if resp==1: 
+    cod=input("ingrese cod: ")
+    for empleado in lista:
+      if empleado.cod_cargo==cod:
+        print(empleado.nombre_apellido,"-",empleado.dni,"-",empleado.cod_cargo)
+
+
+  
+def bajas():
+   print("registro: ")
+   borrador =int(input("¿que dato quiere borrar?: "))
+   print(lista.pop(borrador))
+  
+def sueldo_liquidado():
+  obra_social= 3
+  jubilacion=11
+  print( obra_social)
+  print(jubilacion)
+  for empleado in lista:
+    print("años de antiguedad: ",empleado.antiguedad,"sueldo basico: ",empleado.sueldo_basic,"codigo de cargo: ",empleado.cod_cargo,"sueldo neto: ",empleado.sueldo_neto)
+
+def ganacias():
+  respuesta=int(input("¿mayor sueldo(1) o ganacias mayores(2)?: "))
+  if respuesta==1:
+    for empleado in lista:
+      print(empleado.sueldo_neto)
+      
+  if respuesta==2:
+    for empleado in lista:
+      if empleado.sueldo_neto >= 25000:
+        print(empleado.sueldo_neto)
+
+def salir():
+
+  for i in range(1):
+    print("gracias, vuelva pronto") 
+    break #break here
+
+
+menu()
+   
+
+
+
