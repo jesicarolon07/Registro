@@ -1,0 +1,51 @@
+name: CI/CD Pipeline para Python 
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando hay un push a la rama main
+  pull_request:
+    branches:
+      - main  # También se ejecuta en pull requests a main
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest  # El trabajo se ejecuta en un entorno Windows
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3  # Descarga el código del repositorio
+
+      - name: Set up Python
+        uses: actions/setup-python@v4  # Configura Python
+        with:
+          python-version: '3.x'  # Versión de Python que necesitas (ej. 3.9)
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # Actualiza pip
+          pip install -r requirements.txt  # Instala las dependencias del proyecto
+
+      - name: Run tests
+        run: pytest  # Ejecuta las pruebas usando pytest (puedes cambiar por el framework que uses)
+
+  deploy:
+    needs: build-and-test  # Este trabajo se ejecutará sólo si el trabajo build-and-test pasa exitosamente
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3  # Descarga el código nuevamente para el despliegue
+
+      - name: Log in to Azure CLI
+        uses: azure/login@v1  # Inicia sesión en Azure
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Usa las credenciales de Azure almacenadas en Secrets
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2  # Despliega la app en Azure
+        with:
+          app-name: '<nombre-de-tu-app-en-azure>'  # Reemplaza con el nombre de tu aplicación en Azure
+          slot-name: 'production'  # Puedes cambiar esto si usas otro slot
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # Credenciales de despliegue en Secrets
+
